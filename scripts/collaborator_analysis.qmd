@@ -22,3 +22,36 @@ lobster_traps <- readr::read_csv(here::here("data", "Lobster_Trap_Counts_All_Yea
     janitor::clean_names()
 ```
 
+## Clean data
+
+### Standardize NAs 
+```{r}
+lobster_traps <- lobster_traps %>% 
+    mutate(traps = if_else(condition = (traps == -99999), true = NA, false = traps))
+```
+
+### Remove Naples Reef
+
+
+```{r}
+not_napl <- lobster_traps %>% 
+    filter(site != "NAPL")
+```
+
+### Subset data with lobsters at Carpinteria Reef (CARP) AND number of commercial trap floats >20
+
+
+```{r}
+carp_20_traps <- lobster_traps %>% 
+    filter(site == "CARP" & traps > 20)
+```
+
+## Summary statistics
+
+
+```{r}
+max_lobster_traps <- lobster_traps %>% 
+    group_by(site, month) %>%
+    summarize(max_traps = max(traps, na.rm = TRUE),
+              .groups = 'drop')
+```
