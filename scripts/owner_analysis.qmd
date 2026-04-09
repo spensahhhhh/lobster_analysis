@@ -1,5 +1,24 @@
 ---
 title: "Owner Analysis"
+author: Spencer Fern
 format: html
 ---
+
+## Exercise: Explore, Clean, and wrangle Data
+
+### Setup
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+### Lobster Abundance
+
+```{r}
+lobster_abundance <- readr::read_csv(here::here("data", "Lobster_Abundance_All_Years_20240411.csv")) %>%
+    janitor::clean_names()
+```
 
