@@ -22,3 +22,49 @@ lobster_abundance <- readr::read_csv(here::here("data", "Lobster_Abundance_All_Y
     janitor::clean_names()
 ```
 
+
+```{r}
+unique(lobster_abundance)
+```
+
+## Removing redundant -99999
+
+
+```{r}
+lobster_abundance <- lobster_abundance %>% 
+    mutate(size_mm = na_if(size_mm, -99999))
+lobster_abundance <- lobster_abundance %>% 
+    mutate(size_mm = if_else(condition = (size_mm == -99999), true = NA, false =size_mm))
+
+head(lobster_abundance)
+```
+
+## Removing Naples Reef (NAPL) using filter for data
+
+```{r}
+not_napl <- lobster_abundance %>% 
+    filter(site != "NAPL") 
+
+head(not_napl)
+```
+
+## Subset for Lobsters at Arroyo Quemado (>70 mm)
+
+
+```{r}
+aque_70mm <- lobster_abundance %>% 
+    filter(site == "AQUE" & size_mm >= 70)
+
+head(aque_70mm)
+```
+
+## Summary of Stats on Lobster Abundance
+
+
+```{r}
+max_lobster <- lobster_abundance %>% 
+    group_by(site, month) %>% 
+    summarize(max_length = max(size_mm, na.rm = TRUE), .groups = 'drop')
+
+head(max_lobster)
+```
